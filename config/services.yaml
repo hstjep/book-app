@@ -8,17 +8,45 @@ parameters:
 services:
     # default configuration for services in *this* file
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
+        autowire: true # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
-        resource: '../src/'
+        resource: "../src/"
         exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Entity/'
-            - '../src/Kernel.php'
+            - "../src/DependencyInjection/"
+            - "../src/Entity/"
+            - "../src/Kernel.php"
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # Security
+    app.authenticator:
+        class: App\Security\Authenticator
+        public: true
+
+    App\Security\Authenticator: "@app.authenticator"
+
+    # Application service
+    app.security-service:
+        class: App\Service\SecurityService
+        public: true
+        arguments: 
+            $apiBaseUrl: '%env(API_BASE_URL)%'
+
+    App\Service\SecurityServiceInterface: "@app.security-service"
+
+    # Utils
+    app.api-client:
+        class: 'App\Utils\ApiClient\ApiClient'
+
+    App\Utils\ApiClient\ApiClientInterface: "@app.api-client"
+
+    #Transformer
+    App\Transformer\:
+        resource: "../src/Transformer"
+
+    App\Transformer\UserTransformerInterface: '@App\Transformer\UserTransformer'
