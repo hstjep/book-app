@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>Author Detail</h1>
+	{% if author is defined and author is not null %}
+		{% if author.books|length is same as 0 %}
+			<a href={{path('author_delete', {'id': author.id} )}} onclick="return confirmDelete('author');">Delete</a>
+		{% endif %}
+		<table>
+			<tr>
+				<th>First name:
+				</th>
+				<td>{{author.first_name}}</td>
+			</tr>
+			<tr>
+				<th>Last name:
+				</th>
+				<td>{{author.last_name}}</td>
+			</tr>
+			<tr>
+				<th>Birthday:
+				</th>
+				<td>{{author.birthday|date('d/m/Y')}}</td>
+			</tr>
+			<tr>
+				<th>Gender:
+				</th>
+				<td>{{author.gender}}</td>
+			</tr>
+			<tr>
+				<th>Place of birth:
+				</th>
+				<td>{{author.place_of_birth}}</td>
+			</tr>
+		</table>
+
+		<h2>Books</h2>
+		<a href={{path('book_create', {'author_id': author.id })}}>Create</a>
+		<table>
+			<tr>
+				<th>Title</th>
+				<th>Description</th>
+				<th>Release date</th>
+				<th>ISBN</th>
+				<th>Format</th>
+				<th>Number of pages</th>
+				<th></th>
+			</tr>
+			{% for book in author.books %}
+
+				<tr>
+					<td>{{book.title}}</td>
+					<td>{{book.description}}</td>
+					<td>{{book.release_date|date('d/m/Y')}}</td>
+					<td>{{book.isbn}}</td>
+					<td>{{book.format}}</td>
+					<td>{{book.number_of_pages}}</td>
+					<td>
+						<a href={{ path('book_delete', {'author_id': author.id, 'book_id': book.id}) }} onclick="return confirmDelete('book');">Delete</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% endif %}
+
+	<script>
+		function confirmDelete(type) {
+return confirm(`Are you sure you want to delete this ${type}?`);
+}
+	</script>
+
+{% endblock %}

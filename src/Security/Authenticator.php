@@ -38,12 +38,12 @@ class Authenticator extends AbstractLoginFormAuthenticator implements Authentica
      */
     public function supports(Request $request): bool
     {
-        return ($request->get("_email") !== null && $request->get("_password")) || $request->get("_tok");
+        return ($request->get("_username") !== null && $request->get("_password")) || $request->get("_tok");
     }
 
     public function authenticate(Request $request): Passport
     {
-        $email = $request->get('_email');
+        $email = $request->get('_username');
         $password = $request->get('_password');
 
         try {

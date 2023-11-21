@@ -11,10 +11,17 @@
 		<body>
 			<div>
 				{% if user is defined %}
+					{{ 'Hello ' ~ user.first_name ~ ' ' ~ user.last_name }}
+					|
+					<a href={{path('home_index')}}>Home</a>
+					|
+					<a href={{path('author_index')}}>Authors</a>
+					|
+					<a href={{path('user_profile')}}>Profile</a>
+					|
 					<a href={{path('app_logout')}}>Logout</a>
 				{% endif %}
 			</div>
-
 
 			{% block body %}{% endblock %}
 		</body>

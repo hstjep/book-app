@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% set authorId = app.request.get('author_id') %}
+
+{% block body %}
+	<h1>Create Book</h1>
+
+	{{form_start(form)}}
+	{{form_row(form.title)}}
+	{{form_row(form.description)}}
+	{{form_row(form.author, {'value' : authorId})}}
+	{{form_row(form.release_date)}}
+	{{form_row(form.isbn)}}
+	{{form_row(form.format)}}
+	{{form_row(form.number_of_pages)}}
+
+	{{form_row(form._submit)}}
+	{{form_end(form)}}
+
+	<a href={{path('author_detail', {'id': authorId} )}}>Back</a>
+
+{% endblock %}

@@ -30,6 +30,23 @@ services:
 
     App\Security\Authenticator: "@app.authenticator"
 
+    # Command
+    App\Command\CreateAuthorCommand:
+        class: 'App\Command\CreateAuthorCommand'
+        tags: [console.command]
+        arguments: 
+            $apiUserEmail: '%env(API_USER_EMAIL)%'
+            $apiUserPassword: '%env(API_USER_PASSWORD)%'
+
+    # Form
+    app.login-form-type:
+        class: App\Form\LoginFormType
+        public: true
+
+    app.book-type.form:
+        class: App\Form\BookFormType
+        public: true
+
     # Application service
     app.security-service:
         class: App\Service\SecurityService
@@ -39,11 +56,41 @@ services:
 
     App\Service\SecurityServiceInterface: "@app.security-service"
 
-    # Utils
+    # Repository  
+    App\Infrastructure\Repository\:
+        resource: "../src/Infrastructure/Repository"
+        arguments:
+            $apiBaseUrl: '%env(API_BASE_URL)%'
+
+    App\Domain\Repository\AuthorRepositoryInterface: '@App\Infrastructure\Repository\AuthorRepository'
+    App\Domain\Repository\BookRepositoryInterface: '@App\Infrastructure\Repository\BookRepository'
+
+    #Utils
+
+    ## Api client
     app.api-client:
         class: 'App\Utils\ApiClient\ApiClient'
 
     App\Utils\ApiClient\ApiClientInterface: "@app.api-client"
+    
+    ## Session
+    app.http-session:
+        class: App\Utils\Session\HttpSession
+
+    app.console-session:
+        class: App\Utils\Session\ConsoleSession
+
+    app.session-factory:
+        class: App\Utils\Session\SessionFactory
+
+    App\Utils\Session\SessionInterface: '@app.http-session'
+
+    ## Filter
+    app.filter-options:
+        class: App\Utils\Filter\FilterOptions
+        public: true
+
+    App\Utils\Filter\FilterOptionsInterface: "@app.filter-options"
 
     #Transformer
     App\Transformer\:

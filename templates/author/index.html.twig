@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>Authors</h1>
+
+	{% set direction = app.request.get('direction') %}
+	{% set orderBy = app.request.get('orderBy') %}
+	{% set page = app.request.get('page') %}
+
+	{% set firstNameDirection = (direction == 'asc' and orderBy == 'firstName') ? 'desc' : 'asc' %}
+	{% set lastNameDirection = (direction == 'asc' and orderBy == 'lastName') ? 'desc' : 'asc' %}
+
+	<table>
+		<tr>
+			<th>
+				<a href={{path('author_index', {'orderBy': 'firstName', 'direction': firstNameDirection, 'page': page } )}}>
+					First name
+				</a>
+			</th>
+			<th>
+				<a href={{path('author_index', {'orderBy': 'lastName', 'direction': lastNameDirection, 'page': page } )}}>
+					Last name
+				</a>
+			</th>
+			<th></th>
+		</tr>
+		{% if data is defined and data.items is defined %}
+			{% for item in data.items %}
+				<tr>
+					<td>{{item.first_name}}</td>
+					<td>{{item.last_name}}</td>
+					<td>
+						<a href={{path('author_detail', {'id': item.id} )}}>Details</a>
+					</td>
+				</tr>
+			{% endfor %}
+		{% endif %}
+	</table>
+
+	{% if data is defined and data.pagination is defined %}
+		{% include 'pagination/_pagination.html.twig' with {'pagination': data.pagination} %}
+	{% endif %}
+
+{% endblock %}

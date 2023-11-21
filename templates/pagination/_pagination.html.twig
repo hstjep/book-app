@@ -1,0 +1,37 @@
+{% set route = app.request.attributes.get('_route') %}
+{% set queryParams = app.request.query.all %}
+
+{% if pagination.total_pages > 1 %}
+	<nav aria-label="Page navigation">
+		<div class="pagination">
+			{% if pagination.page > 1 %}
+				<span class="page-item">
+					{% set firstPageParams = queryParams|merge({ page: 1 }) %}
+					<a href="{{ path(route, firstPageParams) }}" aria-label="First">&laquo;&laquo;</a>
+				</span>
+				<span class="page-item">
+					{% set previousPageParams = queryParams|merge({ page: pagination.page - 1 }) %}
+					<a href="{{ path(route, previousPageParams) }}" aria-label="Previous">&laquo;</a>
+				</span>
+			{% endif %}
+
+			{% for page in 1..pagination.total_pages %}
+				<span class="page-item {% if page == pagination.page %}active{% endif %}">
+					{% set pageParams = queryParams|merge({ page: page }) %}
+					<a href="{{ path(route, pageParams) }}">{{ page }}</a>
+				</span>
+			{% endfor %}
+
+			{% if pagination.page < pagination.total_pages %}
+				<span class="page-item">
+					{% set nextPageParams = queryParams|merge({ page: pagination.page + 1 }) %}
+					<a href="{{ path(route, nextPageParams) }}" aria-label="Next">&raquo;</a>
+				</span>
+				<span class="page-item">
+					{% set lastPageParams = queryParams|merge({ page: pagination.total_pages }) %}
+					<a href="{{ path(route, lastPageParams) }}" aria-label="Last">&raquo;&raquo;</a>
+				</span>
+			{% endif %}
+		</div>
+	</nav>
+{% endif %}
