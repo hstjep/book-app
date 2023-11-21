@@ -6,7 +6,7 @@ $ cd book-app/
 $ composer install
 ```
 ### Usage
-**Option 1.** [Download Symfony CLI][4] and run this command:
+**Option 1.** [Download Symfony CLI](https://symfony.com/download) and run this command:
 
 ```bash
 $ symfony server:start
@@ -36,6 +36,8 @@ $ docker build -t book-app .
 ```bash
 $ docker run -p 8000:8000 book-app 
 ```
+
+Then access the application in your browser at the given URL (http://localhost:8000 by default).
 
 ## Documentation
 ### Create author command
